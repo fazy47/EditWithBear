@@ -1,29 +1,39 @@
-/* ============ EDIT YOUR DETAILS HERE ============ */
+/* ============================================================
+   EDIT THIS FILE TO UPDATE YOUR WHOLE WEBSITE
+   Change a value here, save, and every page updates.
+   ============================================================ */
 window.SITE = {
+  brand: "Edit With Bear",
+  logo: "assets/logo.png",
   firstName: "Faizan",
   lastName: "Hassan",
   role: "Video Editor",
-  tagline: "I turn raw footage into long form YouTube videos that keep people watching.",
+  tagline: "I edit long form YouTube videos with sharp cuts, clean text animations, smart sound effects and clean color grading.",
+
+  // Links (change these anytime)
+  driveLink: "https://drive.google.com/drive/folders/1Z2QAskGKOSucB8_YA749-vjf0Zwycp8U?usp=sharing",
+  whatsappDisplay: "0343-7316782",
+  whatsappIntl: "923437316782",   // country code 92 + number without the first 0
+  email: "silentimpulses.yt@gmail.com",
+
+  // Message that is filled in when someone chooses WhatsApp or Gmail
+  contactMessage: "Hi Faizan, I saw your website Edit With Bear and I want to talk about a video edit.",
+  emailSubject: "Video editing project",
+
+  // Skills shown as tags on the About page
+  skills: ["Long-form editing", "Sharp cuts", "Text animations", "Color grading", "Sound effects", "AI voiceover"],
+
   experience: "5 Months",
   mainTool: "Premiere Pro",
+  availability: "Open for new projects",
 
-  // WhatsApp number with country code, digits only (example: 923001234567)
-  whatsapp: "923000000000",
-  email: "yourname@gmail.com",
-  // Your Google Drive folder link
-  drive: "https://drive.google.com/",
-
-  skills: [
-    "Premiere Pro", "Long form editing", "Cuts & pacing", "Text animation",
-    "Color grading", "Sound effects", "AI voiceover"
-  ],
-
+  // Services (shown on the Services page). showOnHome: true = also shown on Home page
   services: [
-    { title: "Long form YouTube editing", desc: "Full video edits with tight cuts, good pacing and a strong hook so viewers stay till the end." },
-    { title: "Cuts & pacing", desc: "Clean cuts, jump cuts and smooth transitions that keep the video moving." },
-    { title: "Text animation", desc: "Hook text, captions and title pops that make the key points stand out." },
-    { title: "Color grading", desc: "Cinematic color so your footage looks consistent and professional." },
-    { title: "Sound effects", desc: "Well placed SFX and sound design that add energy to every scene." },
-    { title: "AI voiceover", desc: "Clean AI voiceover synced to your script and visuals." }
+    { title: "YouTube Long-Form Editing", text: "Transform raw footage into engaging YouTube videos with smooth cuts, storytelling, pacing, sound effects, and clean visuals.", showOnHome: true },
+    { title: "Short-Form Video Editing", text: "Create engaging Instagram Reels, YouTube Shorts, and TikToks with dynamic cuts, subtitles, and attention-grabbing visuals.", showOnHome: true },
+    { title: "Color Correction & Grading", text: "Enhance your footage with balanced colors, improved contrast, and cinematic tones to create a polished visual look.", showOnHome: true },
+    { title: "Captions & Subtitles", text: "Make videos easier to follow with clean, stylish captions and word-by-word text animations.", showOnHome: true },
+    { title: "AI Voiceover", text: "Add clear, natural AI voiceovers to your videos and sync them perfectly with the edit, so your story is easy to follow.", showOnHome: true },
+    { title: "Basic Motion Graphics", text: "Add animated text, titles, simple graphic elements, and visual enhancements to make your videos more engaging.", showOnHome: false }
   ]
 };
