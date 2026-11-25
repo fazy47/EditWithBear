@@ -1,11 +1,11 @@
 
-
-
+name: Deploy EditWithBear Website
 
 on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
 permissions:
@@ -26,16 +26,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v6
 
-      - name: Upload website
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload website files
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: .
+          path: ./Website
 
       - name: Deploy website
         id: deployment
