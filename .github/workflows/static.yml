@@ -1,6 +1,5 @@
 
-# Deploy EditWithBear website to GitHub Pages
-name: Deploy EditWithBear
+name: Deploy static content to Pages
 
 on:
   push:
@@ -36,11 +35,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-          name: editwithbear-pages
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
-        with:
-          artifact_name: editwithbear-pages
-
