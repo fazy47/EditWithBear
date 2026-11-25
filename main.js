@@ -6,7 +6,7 @@
   var gmail = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(S.email) +
               "&su=" + encodeURIComponent(S.emailSubject) + "&body=" + encodeURIComponent(S.contactMessage);
 
-  var brandHTML = '<a class="brand" href="index.html"><img src="' + assets/logo.png + '" alt="" width="44" height="44"><span>' + S.brand.toUpperCase() + '<i>.</i></span></a>';
+  var brandHTML = '<a class="brand" href="index.html"><img src="' + logo.png + '" alt="" width="44" height="44"><span>' + S.brand.toUpperCase() + '<i>.</i></span></a>';
 
   var links = pages.map(function (p) {
     var extra = p[2] === "external" ? ' target="_blank" rel="noopener"' : p[2] === "contact" ? ' data-contact aria-haspopup="dialog"' : '';
