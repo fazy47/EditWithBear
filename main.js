@@ -1,84 +1,117 @@
 (function () {
-  var S = window.SITE;
-  var pages = [["Home","index.html"],["About","about.html"],["Services","services.html"],["Portfolio",S.driveLink,"external"],["Contact","#contact","contact"]];
-  var here = location.pathname.split("/").pop() || "index.html";
-  var wa = "https://wa.me/" + S.whatsappIntl + "?text=" + encodeURIComponent(S.contactMessage);
-  var gmail = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(S.email) +
-              "&su=" + encodeURIComponent(S.emailSubject) + "&body=" + encodeURIComponent(S.contactMessage);
+  var S = window.SITE || {};
+  var page = (location.pathname.split("/").pop() || "index.html").toLowerCase();
 
-  var brandHTML = '<a class="brand" href="index.html"><img src="' + S.logo + '" alt="" width="44" height="44"><span>' + S.brand.toUpperCase() + '<i>.</i></span></a>';
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
 
-  var links = pages.map(function (p) {
-    var extra = p[2] === "external" ? ' target="_blank" rel="noopener"' : p[2] === "contact" ? ' data-contact aria-haspopup="dialog"' : '';
-    var cur = p[1] === here ? ' class="active" aria-current="page"' : '';
-    return '<a href="' + p[1] + '"' + extra + cur + '>' + p[0] + '</a>';
-  }).join("");
+  /* ---------- Header ---------- */
+  var header = document.getElementById("site-header");
+  if (header) {
+    var links = [
+      ["index.html", "Home"],
+      ["about.html", "About"],
+      ["services.html", "Services"]
+    ];
+    var nav = links.map(function (l) {
+      var active = (page === l[0] || (page === "" && l[0] === "index.html")) ? ' class="active"' : "";
+      return '<a href="' + l[0] + '"' + active + ">" + l[1] + "</a>";
+    }).join("");
+    header.innerHTML =
+      '<div class="wrap bar">' +
+        '<a class="brand" href="index.html"><img src="logo.png" alt="Edit With Bear logo" width="40" height="40"><span>Edit With Bear</span></a>' +
+        '<button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false">&#9776;</button>' +
+        '<nav class="nav">' + nav + '<button class="btn small" type="button" data-contact>Let\'s talk</button></nav>' +
+      "</div>";
+    var mb = header.querySelector(".menu-btn");
+    mb.addEventListener("click", function () {
+      var open = header.classList.toggle("open");
+      mb.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
 
-  var h = document.getElementById("site-header");
-  if (h) h.innerHTML =
-    '<div class="wrap bar">' + brandHTML +
-    '<nav id="nav" aria-label="Main">' + links + '</nav>' +
-    '<button class="btn small hide-m" data-contact type="button">Hire me</button>' +
-    '<button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><i></i><i></i><i></i></button></div>';
+  /* ---------- Footer ---------- */
+  var footer = document.getElementById("site-footer");
+  if (footer) {
+    footer.innerHTML =
+      '<div class="wrap foot">' +
+        "<span>&copy; " + new Date().getFullYear() + " Edit With Bear. All rights reserved.</span>" +
+        '<span class="foot-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a></span>' +
+      "</div>";
+  }
 
-  var f = document.getElementById("site-footer");
-  if (f) f.innerHTML =
-    '<div class="wrap foot"><div>' + brandHTML +
-    '<p>' + S.role + ' · Premiere Pro</p></div><nav aria-label="Footer">' + links + '</nav>' +
-    '<div class="foot-contact"><a href="' + wa + '" target="_blank" rel="noopener">WhatsApp: ' + S.whatsappDisplay + '</a>' +
-    '<a href="mailto:' + S.email + '">' + S.email + '</a></div></div>' +
-    '<p class="copy">© ' + new Date().getFullYear() + ' ' + S.firstName + ' ' + S.lastName + '</p>';
+  /* ---------- Text from config ---------- */
+  document.querySelectorAll("[data-site]").forEach(function (n) {
+    var v = S[n.getAttribute("data-site")];
+    if (v != null) n.textContent = v;
+  });
 
-  /* contact chooser */
-  var d = document.createElement("dialog");
-  d.className = "contact-dialog";
-  d.setAttribute("aria-labelledby", "cTitle");
-  d.innerHTML =
-    '<button class="x" type="button" aria-label="Close">×</button>' +
-    '<h2 id="cTitle">How do you want to talk?</h2>' +
-    '<p>Pick one. Your message is already written, just press send.</p>' +
-    '<a class="opt" href="' + wa + '" target="_blank" rel="noopener">' +
-      '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.5 8.5 0 1 1 21 11.5z"/></svg>' +
-      '<span><b>WhatsApp</b><small>' + S.whatsappDisplay + '</small></span></a>' +
-    '<a class="opt" href="' + gmail + '" target="_blank" rel="noopener">' +
-      '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>' +
-      '<span><b>Gmail</b><small>' + S.email + '</small></span></a>';
-  document.body.appendChild(d);
-
-  document.addEventListener("click", function (e) {
-    if (e.target.closest("[data-contact]")) {
-      e.preventDefault();
-      document.getElementById("nav").classList.remove("open");
-      d.showModal();
-    } else if (e.target === d || e.target.closest(".contact-dialog .x") || e.target.closest(".contact-dialog .opt")) {
-      d.close();
+  /* ---------- Links ---------- */
+  function waLink() { return "https://wa.me/" + String(S.whatsapp || "").replace(/\D/g, ""); }
+  document.querySelectorAll("[data-link]").forEach(function (a) {
+    var t = a.getAttribute("data-link");
+    var href = t === "drive" ? S.drive : t === "whatsapp" ? waLink() : t === "email" ? "mailto:" + S.email : null;
+    if (href) {
+      a.setAttribute("href", href);
+      if (t !== "email") { a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener"); }
     }
   });
 
-  var b = document.getElementById("menuBtn"), n = document.getElementById("nav");
-  if (b) b.addEventListener("click", function () {
-    var open = n.classList.toggle("open");
-    b.setAttribute("aria-expanded", open);
-  });
-
-  document.querySelectorAll("[data-site]").forEach(function (el) { el.textContent = S[el.dataset.site]; });
-  document.querySelectorAll("[data-link]").forEach(function (el) {
-    var k = el.dataset.link;
-    if (k === "contact") { el.setAttribute("data-contact", ""); el.href = "#contact"; return; }
-    el.href = k === "drive" ? S.driveLink : k === "whatsapp" ? wa : "mailto:" + S.email;
-    el.target = "_blank"; el.rel = "noopener";
-  });
-
-  var list = document.getElementById("services-list");
-  if (list) list.innerHTML = S.services.filter(function (s) { return s.showOnHome; }).map(function (s) {
-    return '<article class="card"><h3>' + s.title + '</h3><p>' + s.text + '</p></article>';
-  }).join("");
-
-  var sk = document.getElementById("skills-list");
-  if (sk) sk.innerHTML = S.skills.map(function (t) { return "<span>" + t + "</span>"; }).join("");
-
+  /* ---------- Services ---------- */
+  var cards = document.getElementById("services-list");
+  if (cards && S.services) {
+    cards.innerHTML = S.services.map(function (s, i) {
+      return '<article class="card"><span class="num">0' + (i + 1) + "</span><h3>" + esc(s.title) + "</h3><p>" + esc(s.desc) + "</p></article>";
+    }).join("");
+  }
   var full = document.getElementById("services-full");
-  if (full) full.innerHTML = S.services.map(function (s, i) {
-    return '<article class="svc"><span class="num">' + String(i + 1).padStart(2, "0") + '</span><h2>' + s.title + '</h2><p>' + s.text + '</p></article>';
-  }).join("");
+  if (full && S.services) {
+    full.innerHTML = S.services.map(function (s, i) {
+      return '<article class="svc"><span class="num">0' + (i + 1) + '</span><div><h3>' + esc(s.title) + "</h3><p>" + esc(s.desc) + "</p></div></article>";
+    }).join("");
+  }
+
+  /* ---------- Skills ---------- */
+  var skills = document.getElementById("skills-list");
+  if (skills && S.skills) {
+    skills.innerHTML = S.skills.map(function (k) { return "<span>" + esc(k) + "</span>"; }).join("");
+  }
+
+  /* ---------- Contact popup ---------- */
+  var modal;
+  function buildModal() {
+    modal = el("div", "modal");
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.innerHTML =
+      '<div class="modal-box">' +
+        '<button class="modal-x" type="button" aria-label="Close">&times;</button>' +
+        "<h2>Let's <span class=\"lime\">talk</span></h2>" +
+        "<p>Tell me about your video. Pick how you want to reach me.</p>" +
+        '<div class="btns">' +
+          '<a class="btn" target="_blank" rel="noopener" href="' + waLink() + '">WhatsApp</a>' +
+          '<a class="btn ghost" href="mailto:' + esc(S.email || "") + '">Email</a>' +
+        "</div>" +
+      "</div>";
+    document.body.appendChild(modal);
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal || e.target.classList.contains("modal-x")) closeModal();
+    });
+  }
+  function openModal() { if (!modal) buildModal(); modal.classList.add("show"); }
+  function closeModal() { if (modal) modal.classList.remove("show"); }
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-contact]");
+    if (b) { e.preventDefault(); openModal(); }
+  });
 })();
