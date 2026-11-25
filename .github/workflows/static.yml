@@ -1,5 +1,5 @@
 
-name: Deploy EditWithBear Website
+name: Deploy Website
 
 on:
   push:
