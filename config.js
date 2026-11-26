@@ -11,7 +11,7 @@ window.SITE = {
   whatsapp: "923000000000",
   email: "yourname@gmail.com",
   // Your Google Drive folder link
-  drive: https://drive.google.com/drive/folders/1Z2QAskGKOSucB8_YA749-vjf0Zwycp8U?usp=drive_link,
+  drive: "https://drive.google.com/drive/folders/1Z2QAskGKOSucB8_YA749-vjf0Zwycp8U?usp=drive_link",
 
   skills: [
     "Premiere Pro", "Long form editing", "Cuts & pacing", "Text animation",
