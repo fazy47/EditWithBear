@@ -1,11 +1,8 @@
-
-name: Deploy EditWithBear
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
-
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -15,27 +12,32 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
+      # If you have a build step (Vite/React/etc.), add it here, e.g.:
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 22
+      # - run: npm ci && npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .          # change to ./dist (or ./build) if you build your site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v6
-      - name: Upload website
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
-      - name: Deploy website
-        id: deployment
-        uses: actions/deploy-pages@v5
+      - id: deployment
+        uses: actions/deploy-pages@v4
