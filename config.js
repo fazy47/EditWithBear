@@ -8,8 +8,8 @@ window.SITE = {
   mainTool: "Premiere Pro",
 
   // WhatsApp number with country code, digits only (example: 923001234567)
-  whatsapp: "923000000000",
-  email: "yourname@gmail.com",
+  whatsapp: "923437316782",
+  email: "silentimpulses.yt",
   // Your Google Drive folder link
   drive: "https://drive.google.com/drive/folders/1Z2QAskGKOSucB8_YA749-vjf0Zwycp8U?usp=sharing",
 
